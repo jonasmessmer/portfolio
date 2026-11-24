@@ -33,7 +33,7 @@ Für die CMS-Maske auf GitHub Pages müssen `repo` in `public/admin/config.yml` 
 2. In GitHub unter **Settings → Pages** **GitHub Actions** als Quelle wählen.
 3. Weitere Pushes auf `main` bauen und veröffentlichen die Website automatisch. Der Workflow kann auch manuell über **Actions** gestartet werden.
 
-`astro.config.mjs` und der Deploy-Workflow berücksichtigen automatisch den Repository-Unterpfad bei GitHub-Pages-Projektseiten. Es ist derzeit kein GitHub-Remote konfiguriert; vor dem Push muss das Ziel-Repository hinzugefügt werden.
+`astro.config.mjs` und der Deploy-Workflow berücksichtigen automatisch den Repository-Unterpfad bei GitHub-Pages-Projektseiten. Das Repository-Ziel ist `jonasmessmer/portfolio`.
 
 ## Weitere Inhalte
 
