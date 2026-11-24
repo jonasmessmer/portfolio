@@ -1,0 +1,297 @@
+---
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import { projects } from "../../data/projects";
+
+export function getStaticPaths() {
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const currentIndex = projects.findIndex((item) => item.slug === project.slug);
+const nextProject = projects[(currentIndex + 1) % projects.length];
+const galleryImages = [project.cover, ...project.images];
+const baseUrl = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+---
+
+<SiteLayout
+  title={`${project.title} — Kroko Illustration`}
+  description={project.summary}
+>
+  <article
+    class="project-detail"
+    data-project-category={project.category.toLowerCase().replaceAll(" ", "-")}
+  >
+    <section class="project-horizontal-scroll" data-horizontal-gallery>
+      <div class="project-gallery-stage" data-gallery-stage>
+        <div class="project-gallery-viewport" role="region" aria-label={`${project.title} Bilder`}>
+          <div class="project-gallery-track" data-gallery-track>
+            {galleryImages.map((image, index) => (
+              <figure
+                class="project-gallery-slide"
+                data-lightbox-trigger
+                role="button"
+                tabindex="0"
+                aria-label={`Bild vergrößern: ${image.alt}`}
+              >
+                <img src={image.src} alt={image.alt} loading={index === 0 ? "eager" : "lazy"} />
+              </figure>
+            ))}
+            {project.video && (
+              <figure class="project-gallery-slide">
+                <video controls preload="metadata" poster={project.video.poster}>
+                  <source src={project.video.src} />
+                  Dein Browser unterstützt eingebettete Videos nicht.
+                </video>
+              </figure>
+            )}
+          </div>
+        </div>
+
+        <div class="project-bottom-bar">
+          <div class="project-title-group">
+            <h1>{project.title}</h1>
+            <div class="detail-tags">
+              {project.tags.map((tag) => <span>#{tag.replaceAll(" ", "-")}</span>)}
+            </div>
+            <button
+              class="project-info-trigger"
+              type="button"
+              data-project-info-open
+              aria-haspopup="dialog"
+              aria-controls={`project-info-${project.slug}`}
+            >
+              Projektinfo <span aria-hidden="true">↓</span>
+            </button>
+          </div>
+
+          <a class="project-next-trigger" href={`${baseUrl}projects/${nextProject.slug}/`}>
+            NEXT PROJECT <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
+
+      <dialog
+        class="project-info-dialog"
+        id={`project-info-${project.slug}`}
+        data-project-info-dialog
+        aria-labelledby={`project-info-title-${project.slug}`}
+      >
+        <div class="project-info-inner">
+          <div class="project-info-topline">
+            <a class="project-info-brand" href={baseUrl} aria-label="Kroko Illustration, alle Projekte">
+              <span>KROKO</span>
+              <small>Illustration</small>
+            </a>
+            <button class="project-info-close" type="button" data-project-info-close>
+              Schließen <span aria-hidden="true">×</span>
+            </button>
+          </div>
+
+          <div class="project-info-content">
+            <div class="project-info-thumbnails" aria-hidden="true">
+              {galleryImages.map((image, index) => (
+                <img
+                  src={image.src}
+                  alt=""
+                  loading={index === 0 ? "eager" : "lazy"}
+                />
+              ))}
+            </div>
+
+            <div class="project-info-identity">
+              <div class="project-info-heading">
+                <div class="project-info-titleline">
+                  <h2 id={`project-info-title-${project.slug}`}>{project.title}</h2>
+                  <div class="detail-tags">
+                    {project.tags.map((tag) => <span>#{tag.replaceAll(" ", "-")}</span>)}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="project-info-client">
+              <span class="eyebrow">Client</span>
+              {project.clientUrl ? (
+                <a
+                  class="project-info-client-name"
+                  href={project.clientUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {project.client}
+                </a>
+              ) : (
+                <span class="project-info-client-name">{project.client}</span>
+              )}
+            </div>
+
+            {(project.year !== "20XX" || !project.role.startsWith("Platzhalter")) && (
+              <div class="project-info-meta">
+                {project.year !== "20XX" && (
+                  <div class="project-info-meta-item">
+                    <span class="eyebrow">Year</span>
+                    <span>{project.year}</span>
+                  </div>
+                )}
+                {!project.role.startsWith("Platzhalter") && (
+                  <div class="project-info-meta-item">
+                    <span class="eyebrow">Role</span>
+                    <span>{project.role}</span>
+                  </div>
+                )}
+              </div>
+            )}
+
+            <div class="project-info-copy">
+              <p class="project-info-description">{project.description}</p>
+            </div>
+          </div>
+
+          <div class="project-info-footer">
+            <a class="back-link" href={baseUrl}>Alle Projekte <span aria-hidden="true">↗</span></a>
+            <a class="next-project" href={`${baseUrl}projects/${nextProject.slug}/`}>
+              Nächstes Projekt: {nextProject.title} <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </div>
+      </dialog>
+
+      <dialog class="project-lightbox" data-project-lightbox aria-label="Bild in Vollbildansicht">
+        <button class="project-lightbox-close" type="button" data-project-lightbox-close>
+          Schließen <span aria-hidden="true">×</span>
+        </button>
+        <img data-project-lightbox-image alt="" />
+        <button
+          class="project-lightbox-step project-lightbox-step--previous"
+          type="button"
+          data-lightbox-previous
+          aria-label="Vorheriges Bild"
+        >
+          <span aria-hidden="true">←</span>
+        </button>
+        <button
+          class="project-lightbox-step project-lightbox-step--next"
+          type="button"
+          data-lightbox-next
+          aria-label="Nächstes Bild"
+        >
+          <span aria-hidden="true">→</span>
+        </button>
+      </dialog>
+    </section>
+  </article>
+</SiteLayout>
+
+<script>
+  const horizontalGallery = document.querySelector<HTMLElement>("[data-horizontal-gallery]");
+  const galleryStage = horizontalGallery?.querySelector<HTMLElement>("[data-gallery-stage]");
+  const galleryTrack = horizontalGallery?.querySelector<HTMLElement>("[data-gallery-track]");
+  const projectInfoDialog = document.querySelector<HTMLDialogElement>("[data-project-info-dialog]");
+  const projectInfoOpen = document.querySelector<HTMLButtonElement>("[data-project-info-open]");
+  const projectInfoClose = document.querySelector<HTMLButtonElement>("[data-project-info-close]");
+  const projectLightbox = document.querySelector<HTMLDialogElement>("[data-project-lightbox]");
+  const projectLightboxImage = projectLightbox?.querySelector<HTMLImageElement>("[data-project-lightbox-image]");
+  const projectLightboxClose = projectLightbox?.querySelector<HTMLButtonElement>("[data-project-lightbox-close]");
+  const projectLightboxPrevious = projectLightbox?.querySelector<HTMLButtonElement>("[data-lightbox-previous]");
+  const projectLightboxNext = projectLightbox?.querySelector<HTMLButtonElement>("[data-lightbox-next]");
+  const lightboxSlides = Array.from(
+    horizontalGallery?.querySelectorAll<HTMLElement>("[data-lightbox-trigger]") ?? [],
+  );
+  let activeLightboxIndex = -1;
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  projectInfoOpen?.addEventListener("click", () => projectInfoDialog?.showModal());
+  projectInfoClose?.addEventListener("click", () => projectInfoDialog?.close());
+  let projectInfoBackdropPointerDown = false;
+  projectInfoDialog?.addEventListener("pointerdown", (event) => {
+    projectInfoBackdropPointerDown = event.target === projectInfoDialog;
+  });
+  projectInfoDialog?.addEventListener("click", (event) => {
+    if (projectInfoBackdropPointerDown && event.target === projectInfoDialog) {
+      projectInfoDialog.close();
+    }
+    projectInfoBackdropPointerDown = false;
+  });
+
+  const showLightboxImage = (index: number) => {
+    if (!projectLightbox || !projectLightboxImage || lightboxSlides.length === 0) return;
+
+    activeLightboxIndex = (index + lightboxSlides.length) % lightboxSlides.length;
+    const image = lightboxSlides[activeLightboxIndex].querySelector<HTMLImageElement>("img");
+    if (!image) return;
+
+    projectLightboxImage.src = image.currentSrc || image.src;
+    projectLightboxImage.alt = image.alt;
+    if (!projectLightbox.open) projectLightbox.showModal();
+  };
+
+  lightboxSlides.forEach((slide, index) => {
+    const image = slide.querySelector<HTMLImageElement>("img");
+    if (!image) return;
+
+    slide.addEventListener("click", () => showLightboxImage(index));
+    slide.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        showLightboxImage(index);
+      }
+    });
+  });
+
+  projectLightboxClose?.addEventListener("click", () => projectLightbox?.close());
+  projectLightboxPrevious?.addEventListener("click", () => showLightboxImage(activeLightboxIndex - 1));
+  projectLightboxNext?.addEventListener("click", () => showLightboxImage(activeLightboxIndex + 1));
+  projectLightbox?.addEventListener("click", (event) => {
+    if (event.target === projectLightbox) projectLightbox.close();
+  });
+  projectLightbox?.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      showLightboxImage(activeLightboxIndex - 1);
+    } else if (event.key === "ArrowRight") {
+      event.preventDefault();
+      showLightboxImage(activeLightboxIndex + 1);
+    } else if (event.key === "Escape") {
+      event.preventDefault();
+      projectLightbox.close();
+    }
+  });
+  projectLightbox?.addEventListener("close", () => {
+    activeLightboxIndex = -1;
+    projectLightboxImage?.removeAttribute("src");
+    if (projectLightboxImage) projectLightboxImage.alt = "";
+  });
+
+  if (horizontalGallery && galleryStage && galleryTrack && !prefersReducedMotion.matches) {
+    let scrollFrame = 0;
+
+    const updateGallery = () => {
+      const horizontalDistance = Math.max(0, galleryTrack.scrollWidth - galleryStage.clientWidth);
+      horizontalGallery.style.height = `${galleryStage.offsetHeight + horizontalDistance}px`;
+
+      const distanceScrolled = Math.min(
+        horizontalDistance,
+        Math.max(0, -horizontalGallery.getBoundingClientRect().top),
+      );
+      galleryTrack.style.transform = `translate3d(${-distanceScrolled}px, 0, 0)`;
+    };
+
+    const requestGalleryUpdate = () => {
+      if (scrollFrame) return;
+      scrollFrame = requestAnimationFrame(() => {
+        scrollFrame = 0;
+        updateGallery();
+      });
+    };
+
+    horizontalGallery.classList.add("is-horizontal");
+    updateGallery();
+    window.addEventListener("scroll", requestGalleryUpdate, { passive: true });
+    window.addEventListener("resize", requestGalleryUpdate);
+  }
+</script>

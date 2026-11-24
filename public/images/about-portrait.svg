@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 900" fill="none">
+  <rect width="760" height="900" fill="#D6E4D4"/>
+  <circle cx="567" cy="181" r="103" fill="#F2D47B"/>
+  <path d="M74 727C124 561 226 481 378 481C535 481 635 579 687 757V900H74V727Z" fill="#526F5B"/>
+  <path d="M195 370C195 237 274 153 383 153C494 153 571 240 571 369V478C571 616 491 705 381 705C270 705 192 616 192 480L195 370Z" fill="#C88269"/>
+  <path d="M186 377C199 238 270 121 386 121C510 121 582 233 582 374C537 338 499 289 473 229C407 303 307 349 186 377Z" fill="#344151"/>
+  <path d="M249 416C270 395 298 395 321 415M422 413C444 394 473 397 493 417" stroke="#344151" stroke-width="11" stroke-linecap="round"/>
+  <path d="M344 548C371 565 402 561 425 542" stroke="#904F53" stroke-width="9" stroke-linecap="round"/>
+  <path d="M266 689L382 748L497 687L548 900H218L266 689Z" fill="#F5E7C3"/>
+  <path d="M87 336C122 302 153 288 187 282M582 293C620 299 650 317 678 350" stroke="#F8F2DC" stroke-width="8" stroke-linecap="round"/>
+  <path d="M113 437L129 474L169 478L138 503L149 542L113 519L78 542L88 503L57 478L98 474L113 437Z" fill="#E68F69"/>
+</svg>

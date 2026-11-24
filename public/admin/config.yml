@@ -1,0 +1,115 @@
+local_backend: true
+
+backend:
+  name: github
+  repo: YOUR_GITHUB_USERNAME/YOUR_REPOSITORY
+  branch: main
+
+media_folder: public/images
+public_folder: /images
+
+collections:
+  - name: projects
+    label: Projekte
+    files:
+      - name: portfolio-projects
+        label: Projekte verwalten
+        file: src/content/projects.json
+        fields:
+          - label: Projekte
+            name: projects
+            widget: list
+            collapsed: true
+            summary: "{{fields.title}} — {{fields.category}}"
+            fields:
+              - label: Reihenfolge
+                name: order
+                widget: number
+                value_type: int
+                min: 1
+                default: 100
+              - label: Titel
+                name: title
+                widget: string
+              - label: URL-Slug
+                name: slug
+                widget: string
+                pattern:
+                  - "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                  - "Nur Kleinbuchstaben, Zahlen und Bindestriche verwenden."
+              - label: Kategorie
+                name: category
+                widget: select
+                options:
+                  - Figuren
+                  - Editorial
+                  - Bücher
+                  - Stillleben
+              - label: Tags
+                name: tags
+                widget: list
+                field:
+                  label: Tag
+                  name: tag
+                  widget: string
+              - label: Jahr
+                name: year
+                widget: string
+              - label: Auftraggeber
+                name: client
+                widget: string
+              - label: Link zum Auftraggeber
+                name: clientUrl
+                widget: string
+                required: false
+              - label: Frontpage-Bild (Cover)
+                name: cover
+                widget: object
+                fields:
+                  - label: Bild
+                    name: src
+                    widget: image
+                  - label: Alternativtext
+                    name: alt
+                    widget: string
+              - label: Kurzbeschreibung
+                name: summary
+                widget: text
+              - label: Projektbeschreibung
+                name: description
+                widget: text
+              - label: Rolle
+                name: role
+                widget: string
+              - label: Weitere Bilder
+                name: images
+                widget: list
+                collapsed: true
+                fields:
+                  - label: Bild
+                    name: src
+                    widget: image
+                  - label: Alternativtext
+                    name: alt
+                    widget: string
+                  - label: Bildunterschrift
+                    name: caption
+                    widget: string
+                    required: false
+              - label: Video
+                name: video
+                widget: object
+                required: false
+                fields:
+                  - label: Videodatei
+                    name: src
+                    widget: file
+                    media_folder: public/videos
+                    public_folder: /videos
+                  - label: Videotitel
+                    name: title
+                    widget: string
+                  - label: Vorschaubild
+                    name: poster
+                    widget: image
+                    required: false

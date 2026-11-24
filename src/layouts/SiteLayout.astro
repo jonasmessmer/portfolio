@@ -1,0 +1,140 @@
+---
+import "../styles/global.css";
+
+type Props = {
+  title?: string;
+  description?: string;
+};
+
+const {
+  title = "Kroko Illustration",
+  description = "Illustration portfolio — project text and contact details are placeholders.",
+} = Astro.props;
+const path = Astro.url.pathname.replace(/\/+$/, "") || "/";
+const baseUrl = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+const isAbout = path.endsWith("/about");
+const basePath = baseUrl.replace(/\/$/, "");
+const isHome = path === "/" || path === basePath;
+const homeHref = baseUrl;
+const aboutHref = `${baseUrl}about/`;
+---
+
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f6f6f6" />
+    <title>{title}</title>
+    <script is:inline>
+      try {
+        const savedTheme = localStorage.getItem("kroko-theme");
+        const theme = savedTheme === "light" || savedTheme === "dark"
+          ? savedTheme
+          : window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        document.documentElement.dataset.theme = theme;
+        const themeColor = document.querySelector('meta[name="theme-color"]');
+        if (themeColor) themeColor.content = theme === "dark" ? "#000000" : "#f6f6f6";
+      } catch (error) {
+        console.error("Unable to load the saved color theme.", error);
+      }
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href={homeHref} aria-label="Kroko Illustration, Startseite">
+        <svg class="kroko-mark" viewBox="0 0 64 64" aria-hidden="true">
+          <circle cx="32" cy="32" r="29" fill="none" stroke="currentColor" stroke-width="1.5" />
+          <path
+            class="kroko-mark-inner"
+            d="M25 15v34m1-18 17-16M27 32l18 17"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="3"
+          />
+        </svg>
+        <span class="brand-copy">
+          <span class="brand-title">KROKO</span>
+          <span class="brand-subtitle">Illustration</span>
+        </span>
+      </a>
+    </header>
+    <button
+      class="theme-toggle"
+      type="button"
+      data-theme-toggle
+      aria-label="Zum dunklen Design wechseln"
+      title="Zum dunklen Design wechseln"
+      aria-pressed="false"
+    >
+      <span aria-hidden="true">☾</span>
+    </button>
+    <nav class="header-nav" aria-label="Hauptnavigation">
+      <a class:list={["nav-link", { active: !isAbout }]} href={homeHref}>Work</a>
+      <a class:list={["nav-link", { active: isAbout }]} href={aboutHref}>About</a>
+      <a class="nav-link" href="mailto:hello@example.com">Contact</a>
+    </nav>
+    <main>
+      <slot />
+    </main>
+    {!isHome && !isAbout && (
+      <footer class="site-footer">
+        <a class="brand footer-brand" href={homeHref} aria-label="Kroko Illustration, Startseite">
+          <svg class="kroko-mark" viewBox="0 0 64 64" aria-hidden="true">
+            <circle cx="32" cy="32" r="29" fill="none" stroke="currentColor" stroke-width="1.5" />
+            <path
+              d="M25 15v34m1-18 17-16M27 32l18 17"
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="3"
+            />
+          </svg>
+          <span class="brand-copy">
+            <span class="brand-title">KROKO</span>
+            <span class="brand-subtitle">Illustration</span>
+          </span>
+        </a>
+        <p>Platzhalter für einen kurzen Schlusssatz.</p>
+        <a class="footer-email" href="mailto:hello@example.com">hello@example.com <span aria-hidden="true">↗</span></a>
+        <small>© {new Date().getFullYear()} Kroko Illustration</small>
+      </footer>
+    )}
+    <script>
+      const themeToggle = document.querySelector<HTMLButtonElement>("[data-theme-toggle]");
+      const themeColor = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+      const themeIcon = themeToggle?.querySelector("span");
+
+      if (themeToggle && themeColor && themeIcon) {
+        const updateThemeToggle = () => {
+          const isDark = document.documentElement.dataset.theme === "dark";
+          const label = isDark ? "Zum hellen Design wechseln" : "Zum dunklen Design wechseln";
+          themeToggle.setAttribute("aria-label", label);
+          themeToggle.setAttribute("title", label);
+          themeToggle.setAttribute("aria-pressed", String(isDark));
+          themeIcon.textContent = isDark ? "☀" : "☾";
+          themeColor.content = isDark ? "#000000" : "#f6f6f6";
+        };
+
+        updateThemeToggle();
+        themeToggle.addEventListener("click", () => {
+          const theme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+          document.documentElement.dataset.theme = theme;
+          updateThemeToggle();
+
+          try {
+            localStorage.setItem("kroko-theme", theme);
+          } catch (error) {
+            console.error("Unable to save the selected color theme.", error);
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

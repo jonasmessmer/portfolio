@@ -1,0 +1,145 @@
+{
+  "projects": [
+    {
+      "order": 10,
+      "slug": "projekt-01",
+      "title": "Projekt 01",
+      "category": "Figuren",
+      "tags": ["Tag 01", "Tag 02"],
+      "year": "20XX",
+      "client": "Client eintragen",
+      "cover": {
+        "src": "/images/little-rituals.svg",
+        "alt": "Beispielillustration als Platzhalter für Projekt 01"
+      },
+      "summary": "Platzhalter für eine kurze Projektbeschreibung.",
+      "description": "Platzhalter: Beschreibe hier die Idee, den Auftrag und den Entstehungsprozess des Projekts.",
+      "role": "Platzhalter für deine Rolle im Projekt",
+      "images": [
+        {
+          "src": "/images/little-rituals-detail.svg",
+          "alt": "Zusätzliche Beispielillustration als Platzhalter für Projekt 01",
+          "caption": "Bildunterschrift als Platzhalter"
+        },
+        {
+          "src": "/images/little-rituals-studies.svg",
+          "alt": "Farb- und Figurenstudien als Platzhalter für Projekt 01",
+          "caption": "Skizzen oder Making-of als Platzhalter"
+        }
+      ]
+    },
+    {
+      "order": 20,
+      "slug": "projekt-02",
+      "title": "Projekt 02",
+      "category": "Editorial",
+      "tags": ["Tag 01", "Tag 02"],
+      "year": "20XX",
+      "client": "Client eintragen",
+      "cover": {
+        "src": "/images/revolution.jpg",
+        "alt": "Illustration einer Person mit Flagge auf einem Fahrzeug in einer brennenden Straßenszene"
+      },
+      "summary": "Platzhalter für eine kurze Projektbeschreibung.",
+      "description": "Platzhalter: Ergänze hier einen kurzen Text zur Geschichte, zum Kontext und zur visuellen Idee.",
+      "role": "Platzhalter für deine Rolle im Projekt",
+      "images": [
+        {
+          "src": "/images/green-rooms-detail.svg",
+          "alt": "Zusätzliche Beispielillustration als Platzhalter für Projekt 02",
+          "caption": "Bildunterschrift als Platzhalter"
+        },
+        {
+          "src": "/images/green-rooms-studies.svg",
+          "alt": "Form- und Farbstudien als Platzhalter für Projekt 02",
+          "caption": "Skizzen oder Making-of als Platzhalter"
+        }
+      ]
+    },
+    {
+      "order": 30,
+      "slug": "projekt-03",
+      "title": "Projekt 03",
+      "category": "Bücher",
+      "tags": ["Tag 01", "Tag 02"],
+      "year": "20XX",
+      "client": "Client eintragen",
+      "cover": {
+        "src": "/images/moon-milk.svg",
+        "alt": "Beispielillustration als Platzhalter für Projekt 03"
+      },
+      "summary": "Platzhalter für eine kurze Projektbeschreibung.",
+      "description": "Platzhalter: Nutze diesen Bereich für eine kurze Projektbeschreibung oder einen Einblick in deine Serie.",
+      "role": "Platzhalter für deine Rolle im Projekt",
+      "images": [
+        {
+          "src": "/images/moon-milk-detail.svg",
+          "alt": "Zusätzliche Beispielillustration als Platzhalter für Projekt 03",
+          "caption": "Bildunterschrift als Platzhalter"
+        },
+        {
+          "src": "/images/moon-milk-studies.svg",
+          "alt": "Figurenstudie als Platzhalter für Projekt 03",
+          "caption": "Skizzen oder Making-of als Platzhalter"
+        }
+      ]
+    },
+    {
+      "order": 40,
+      "slug": "projekt-04",
+      "title": "Projekt 04",
+      "category": "Stillleben",
+      "tags": ["Tag 01", "Tag 02"],
+      "year": "20XX",
+      "client": "Client eintragen",
+      "cover": {
+        "src": "/images/Unbenanntes_Projekt.jpg",
+        "alt": "Blumenstillleben in einer pinken Vase"
+      },
+      "summary": "Platzhalter für eine kurze Projektbeschreibung.",
+      "description": "Platzhalter: Beschreibe hier kurz das Thema, deine Herangehensweise und das Ergebnis.",
+      "role": "Platzhalter für deine Rolle im Projekt",
+      "images": [
+        {
+          "src": "/images/sunday-market-detail.svg",
+          "alt": "Zusätzliche Beispielillustration als Platzhalter für Projekt 04",
+          "caption": "Bildunterschrift als Platzhalter"
+        },
+        {
+          "src": "/images/sunday-market-studies.svg",
+          "alt": "Farb- und Motivstudien als Platzhalter für Projekt 04",
+          "caption": "Skizzen oder Making-of als Platzhalter"
+        }
+      ]
+    },
+    {
+      "order": 50,
+      "slug": "flyer-schaffhausen",
+      "title": "Flyer",
+      "category": "Editorial",
+      "tags": ["Flyer", "Schaffhausen"],
+      "year": "2022",
+      "client": "Kinder- und Jugenddienst Schaffhausen",
+      "clientUrl": "https://sh.ch/CMS/Webseite/Kanton-Schaffhausen/Beh-rde/Verwaltung/Erziehungsdepartement/Dienststelle-Sport--Familie-und-Jugend/Kinder--und-Jugenddienst-58540-DE.html",
+      "cover": {
+        "src": "/images/flyer-schaffhausen-illustration.png",
+        "alt": "Gelb-schwarze Illustration für den Flyer des Kinder- und Jugenddienstes Schaffhausen"
+      },
+      "summary": "Flyer mit individueller Illustration für den Kinder- und Jugenddienst Schaffhausen.",
+      "description": "Ein Flyer, der den Kinder- und Jugenddienst Schaffhausen offen und nahbar präsentiert. Die eigens entwickelte Illustration in den Farben des Kantons verbindet spielerische Details mit einer klaren, vertrauensvollen Ansprache.",
+      "role": "Illustration und Gestaltung",
+      "images": [
+        {
+          "src": "/images/flyer-schaffhausen-photo-1.jpg",
+          "alt": "Gedruckte Flyer des Kinder- und Jugenddienstes auf einer Straße mit roten und weißen Markierungen",
+          "caption": "Flyer im Einsatz"
+        },
+        {
+          "src": "/images/flyer-schaffhausen-photo-2.jpg",
+          "alt": "Aufgeschlagener Flyer mit Illustration und Informationen zum Kinder- und Jugenddienst auf einer Straße",
+          "caption": "Flyer, Innenansicht"
+        }
+      ]
+    }
+  ]
+}

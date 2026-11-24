@@ -1,0 +1,43 @@
+---
+import SiteLayout from "../layouts/SiteLayout.astro";
+
+const baseUrl = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+---
+
+<SiteLayout
+  title="About — Jonas Messmer"
+  description="Jonas Messmer is an illustrator from Switzerland who adapts observations of the world around him into playful illustrations."
+>
+  <section class="about-page">
+    <h1 class="about-statement">
+      Jonas Messmer is an
+      <span class="about-color--figuren">illustrator</span> from
+      <span class="about-color--editorial">Switzerland</span> who
+      <span class="about-color--stillleben">observes</span> the
+      world around him and adapts its details into the
+      <span class="about-color--buecher">playful language</span> of illustration.
+    </h1>
+    <div class="about-bottom">
+      <figure class="about-image">
+        <img src={`${baseUrl}images/klein_portfolio.jpg`} alt="Portrait of illustrator Jonas Messmer" />
+        <figcaption>foto ©dominic müller</figcaption>
+      </figure>
+      <div class="about-details">
+        <div class="about-detail">
+          <span class="eyebrow">Selected clients</span>
+          <p>Client list to be added</p>
+        </div>
+        <div class="about-detail">
+          <span class="eyebrow">Contact</span>
+          <p><a href="mailto:hello@example.com">hello@example.com</a></p>
+        </div>
+        <div class="about-detail">
+          <span class="eyebrow">Location</span>
+          <p>Switzerland</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</SiteLayout>

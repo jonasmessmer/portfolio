@@ -1,0 +1,235 @@
+---
+import SiteLayout from "../layouts/SiteLayout.astro";
+import { projects } from "../data/projects";
+
+const categories = [...new Set(projects.map((project) => project.category))];
+const baseUrl = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+---
+
+<SiteLayout
+  title="Kroko Illustration"
+  description="Illustrationsportfolio mit Platzhaltern für Projekte, Texte und Kontakt."
+>
+  <section class="work-section page-shell" id="selected-work" aria-label="Projekte">
+    <div class="work-view-toggle" role="group" aria-label="Projektansicht">
+      <button class="work-view-button active" type="button" data-view-mode="explore" aria-pressed="true">
+        Explore
+      </button>
+      <button class="work-view-button" type="button" data-view-mode="index" aria-pressed="false">
+        Index
+      </button>
+    </div>
+
+    <div class="filter-row" aria-label="Projekte filtern" hidden>
+      <div class="filter-list">
+        <button class="filter-button active" type="button" data-filter="all" aria-pressed="true">Alle</button>
+        {categories.map((category) => (
+          <button
+            class="filter-button"
+            type="button"
+            data-filter={category.toLowerCase().replaceAll(" ", "-")}
+            aria-pressed="false"
+          >
+            {category}
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <div class="project-grid">
+      {projects.map((project, index) => {
+        const previewSlides = [project.cover, ...project.images];
+        const projectHref = `${baseUrl}projects/${project.slug}/`;
+
+        return (
+          <article
+            class="project-card"
+            data-project-card
+            data-project-preview
+            data-project-category={project.category.toLowerCase().replaceAll(" ", "-")}
+          >
+            <div class="project-image">
+              <a class="project-image-link" href={projectHref} aria-label={`Open ${project.title}`}>
+                <img
+                  src={project.cover.src}
+                  alt={project.cover.alt}
+                  data-preview-image
+                  loading={index > 1 ? "lazy" : "eager"}
+                />
+              </a>
+              {previewSlides.length > 1 && (
+                <>
+                  <div class="project-preview-controls">
+                    <button
+                      class="project-preview-button project-preview-button--previous"
+                      type="button"
+                      data-preview-direction="-1"
+                      aria-label={`Previous image for ${project.title}`}
+                    >
+                      ‹
+                    </button>
+                    <button
+                      class="project-preview-button project-preview-button--next"
+                      type="button"
+                      data-preview-direction="1"
+                      aria-label={`Next image for ${project.title}`}
+                    >
+                      ›
+                    </button>
+                  </div>
+                </>
+              )}
+              {previewSlides.map((slide) => (
+                <span
+                  hidden
+                  data-preview-slide
+                  data-src={slide.src}
+                  data-alt={slide.alt}
+                />
+              ))}
+            </div>
+            <div class="project-card-caption">
+              <div class="project-card-heading">
+                <a class="project-card-title" href={projectHref}>
+                  <h3>{project.title}</h3>
+                </a>
+                {previewSlides.length > 1 && (
+                  <span class="project-preview-count" data-preview-count aria-live="polite">
+                    1 / {previewSlides.length}
+                  </span>
+                )}
+              </div>
+              <div class="project-card-action-area">
+                <div class="project-tags">
+                  {project.tags.map((tag) => <span>#{tag}</span>)}
+                </div>
+                <a class="project-card-action" href={projectHref}>
+                  Arbeit ansehen
+                </a>
+              </div>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  </section>
+</SiteLayout>
+
+<script>
+  const filters = document.querySelectorAll<HTMLButtonElement>("[data-filter]");
+  const cards = document.querySelectorAll<HTMLElement>("[data-project-card]");
+  const viewButtons = document.querySelectorAll<HTMLButtonElement>("[data-view-mode]");
+  const filterRow = document.querySelector<HTMLElement>(".filter-row");
+  const selectedCategories = new Set<string>();
+
+  const updateFilters = () => {
+    filters.forEach((button) => {
+      const category = button.dataset.filter;
+
+      if (!category) {
+        throw new Error("Project filter is missing its category.");
+      }
+
+      const isSelected = category === "all"
+        ? selectedCategories.size === 0
+        : selectedCategories.has(category);
+      button.classList.toggle("active", isSelected);
+      button.setAttribute("aria-pressed", String(isSelected));
+    });
+
+    cards.forEach((card) => {
+      const category = card.dataset.projectCategory;
+
+      if (!category) {
+        throw new Error("Project card is missing its category.");
+      }
+
+      card.hidden = selectedCategories.size > 0 && !selectedCategories.has(category);
+    });
+  };
+
+  filters.forEach((filter) => {
+    filter.addEventListener("click", () => {
+      const category = filter.dataset.filter;
+
+      if (!category) {
+        throw new Error("Project filter is missing its category.");
+      }
+
+      if (category === "all") {
+        selectedCategories.clear();
+      } else if (selectedCategories.has(category)) {
+        selectedCategories.delete(category);
+      } else {
+        selectedCategories.add(category);
+      }
+
+      updateFilters();
+    });
+  });
+
+  viewButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const showIndex = button.dataset.viewMode === "index";
+      viewButtons.forEach((viewButton) => {
+        const isSelected = viewButton === button;
+        viewButton.classList.toggle("active", isSelected);
+        viewButton.setAttribute("aria-pressed", String(isSelected));
+      });
+
+      if (filterRow) filterRow.hidden = !showIndex;
+      if (!showIndex) {
+        selectedCategories.clear();
+        updateFilters();
+      }
+    });
+  });
+
+  const projectPreviews = document.querySelectorAll<HTMLElement>("[data-project-preview]");
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  projectPreviews.forEach((preview) => {
+    const image = preview.querySelector<HTMLImageElement>("[data-preview-image]");
+    const counter = preview.querySelector<HTMLElement>("[data-preview-count]");
+    const slides = Array.from(preview.querySelectorAll<HTMLElement>("[data-preview-slide]")).map((slide) => {
+      const { src, alt } = slide.dataset;
+
+      if (!src || alt === undefined) {
+        throw new Error("Project preview slide is missing image data.");
+      }
+
+      return { src, alt };
+    });
+
+    if (slides.length < 2) return;
+    if (!image || !counter) {
+      throw new Error("Project preview controls are missing their image or counter.");
+    }
+
+    let activeSlide = 0;
+
+    preview.querySelectorAll<HTMLButtonElement>("[data-preview-direction]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const direction = Number(button.dataset.previewDirection);
+
+        if (direction !== -1 && direction !== 1) {
+          throw new Error("Project preview button has an invalid direction.");
+        }
+
+        activeSlide = (activeSlide + direction + slides.length) % slides.length;
+        image.src = slides[activeSlide].src;
+        image.alt = slides[activeSlide].alt;
+        counter.textContent = `${activeSlide + 1} / ${slides.length}`;
+
+        if (!prefersReducedMotion.matches) {
+          image.animate([{ opacity: 0.65 }, { opacity: 1 }], {
+            duration: 180,
+            easing: "ease-out",
+          });
+        }
+      });
+    });
+  });
+</script>
