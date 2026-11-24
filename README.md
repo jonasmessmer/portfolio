@@ -21,7 +21,7 @@ Für lokale Änderungen:
 
 1. Terminal 1: `npm run dev`
 2. Terminal 2 im Repository: `npx decap-server`
-3. Öffne `http://localhost:4321/admin/`
+3. Öffne `http://localhost:4321/admin/index.html`
 
 Der lokale Proxy schreibt Änderungen direkt in die Dateien dieses Repositorys. Er ist nur für die lokale Entwicklung gedacht; nicht öffentlich ins Netzwerk freigeben.
 
